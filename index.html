@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Stream App</title>
+</head>
+<body>
+    <form id="data-form">
+        <label for="data">Enter Data:</label>
+        <input type="text" id="data" name="data" required>
+        <button type="submit">Send</button>
+    </form>
+
+    <ul id="data-list"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const socket = io();
+
+        $('#data-form').submit(function(e) {
+            e.preventDefault();
+            const data = $('#data').val();
+            socket.emit('send-data', data);
+            $('#data').val('');
+        });
+
+        socket.on('receive-data', function(data) {
+            $('#data-list').append(`<li>${data}</li>`);
+        });
+    </script>
+</body>
+</html>
